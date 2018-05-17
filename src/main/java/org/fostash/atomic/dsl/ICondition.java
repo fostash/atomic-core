@@ -1,6 +1,6 @@
 package org.fostash.atomic.dsl;
 
-import org.json.JSONObject;
+import org.fostash.atomic.metamodel.ColumnMeta;
 
 /**
  *
@@ -14,7 +14,7 @@ public interface ICondition extends ISql {
      * @param v value
      * @return IJoint interface condition.
      */
-    IJoint eq(String f, Object v);
+    <T> IJoint eq(ColumnMeta<T> f, T v);
 
     /**
      * not equals condition.
@@ -22,7 +22,7 @@ public interface ICondition extends ISql {
      * @param v value
      * @return IJoint interface condition.
      */
-    IJoint notEq(String f, Object v);
+    <T> IJoint notEq(ColumnMeta<T> f, T v);
 
     /**
      * greater than condition.
@@ -30,7 +30,7 @@ public interface ICondition extends ISql {
      * @param v value
      * @return IJoint interface condition.
      */
-    IJoint gt(String f, Object v);
+    <T> IJoint gt(ColumnMeta<T> f, T v);
 
     /**
      * less than condition.
@@ -39,7 +39,7 @@ public interface ICondition extends ISql {
      * @return IJoint interface condition.
      */
 
-    IJoint lt(String f, Object v);
+    <T> IJoint lt(ColumnMeta<T> f, T v);
 
     /**
      * greater or equal than condition.
@@ -48,7 +48,7 @@ public interface ICondition extends ISql {
      * @return IJoint interface condition.
      */
 
-    IJoint ge(String f, Object v);
+    <T> IJoint ge(ColumnMeta<T> f, T v);
 
     /**
      * less or equal than condition.
@@ -56,7 +56,7 @@ public interface ICondition extends ISql {
      * @param v value
      * @return IJoint interface condition.
      */
-    IJoint le(String f, Object v);
+    <T> IJoint le(ColumnMeta<T> f, T v);
 
     /**
      * in condition.
@@ -64,7 +64,7 @@ public interface ICondition extends ISql {
      * @param v value
      * @return IJoint interface condition.
      */
-    IJoint in(String f, Object[] v);
+    <T> IJoint in(ColumnMeta<T> f, T[] v);
 
     /**
      * not in condition.
@@ -72,7 +72,7 @@ public interface ICondition extends ISql {
      * @param v value
      * @return IJoint interface condition.
      */
-    IJoint notIn(String f, Object[] v);
+    <T> IJoint notIn(ColumnMeta<T> f, T[] v);
 
     /**
      * exists condition.
@@ -93,14 +93,14 @@ public interface ICondition extends ISql {
      * @param f column name
      * @return IJoint interface condition.
      */
-    IJoint isNull(String f);
+    <T> IJoint isNull(ColumnMeta<T> f);
 
     /**
      * is not null condition.
      * @param f column name
      * @return IJoint interface condition.
      */
-    IJoint isNotNull(String f);
+    <T> IJoint isNotNull(ColumnMeta<T> f);
 
     /**
      * limit result to lim value

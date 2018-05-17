@@ -1,6 +1,5 @@
 package org.fostash.atomic.jdbctojson;
 
-import javaslang.control.Try;
 import org.apache.commons.dbcp2.ConnectionFactory;
 import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp2.PoolableConnection;
@@ -11,9 +10,12 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -76,8 +78,7 @@ public final class DBFactoryPool {
 
         driver.registerPool(getInfo(SetupInformation.Keys.POOLNAME),connectionPool);
 
-        Try.of(() -> getInfo(SetupInformation.Keys.DBS_PACKAGE))
-                .andThenTry(DBFactoryPool::createClassSchema).onSuccess(p -> System.out.println("class schema creation successful"));
+        //DBFactoryPool.createClassSchema(getInfo(SetupInformation.Keys.DBS_PACKAGE))
     }
 
     public static void createClassSchema(final String packageName) throws SQLException {
@@ -106,12 +107,16 @@ public final class DBFactoryPool {
         driver.closePool(getInfo(SetupInformation.Keys.POOLNAME));
     }
 
-    public static Supplier<Try<Connection>> startTransaction() {
-        return () -> Try.of(() -> {
+    public static Supplier<Connection> startTransaction() {
+        return () -> {
+            try {
                 final Connection connection = getConnection();
                 connection.setAutoCommit(false);
                 return connection;
-        });
+            } catch (SQLException e) {
+                throw new RuntimeException("Connection database error", e);
+            }
+        };
     }
 
     public static void stopTransaction() throws SQLException {

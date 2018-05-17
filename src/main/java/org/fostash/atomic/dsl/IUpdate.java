@@ -8,9 +8,9 @@ public interface IUpdate extends ISql {
 
     /**
      * @param sets array of set operation
-     * @return IWhere interface
+     * @return ICondition interface
      */
-    IWhere set(ISet... sets);
+    ICondition set(ISet... sets);
 
     /**
      * ISet interface.

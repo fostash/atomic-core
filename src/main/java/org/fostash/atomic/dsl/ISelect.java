@@ -1,6 +1,9 @@
 package org.fostash.atomic.dsl;
 
 import org.fostash.atomic.dsl.exception.SqlBuilderException;
+import org.fostash.atomic.metamodel.ColumnMeta;
+
+import java.util.List;
 
 /**
  *
@@ -12,10 +15,14 @@ public interface ISelect extends ISql {
      * @param c array of columns
      * @return IFrom interface
      */
-    IFrom select(IColumn... c);
+    IFrom select(ColumnMeta... c);
+    IFrom select(Aggregator aggregator, ColumnMeta... c);
+    IFrom select(List<Aggregator> aggregators, ColumnMeta... c);
 
     /**
+     *
      * IColumn interface.
+     * is implemented by generated class from class annotation
      */
     interface IColumn {
 
@@ -30,9 +37,9 @@ public interface ISelect extends ISql {
         String getAlias();
 
         /**
-         * @return function to apply
+         * @return aggregator function
          */
-        String getFunction();
+        Aggregator getFunction();
 
         /**
          * build sql instruction.

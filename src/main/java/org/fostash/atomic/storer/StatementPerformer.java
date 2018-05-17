@@ -10,5 +10,5 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface StatementPerformer<T> {
 
-    T perform(PreparedStatement t) throws SQLException;
+    T perform(PreparedStatement t) throws SQLException, SqlExecutionException;
 }

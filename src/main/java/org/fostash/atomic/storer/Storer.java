@@ -1,20 +1,26 @@
 package org.fostash.atomic.storer;
 
-import javaslang.control.Try;
-import org.fostash.atomic.dsl.*;
+import org.fostash.atomic.dsl.ICondition;
+import org.fostash.atomic.dsl.IFrom;
+import org.fostash.atomic.dsl.IInsert;
+import org.fostash.atomic.dsl.ISelect;
+import org.fostash.atomic.dsl.ISql;
+import org.fostash.atomic.dsl.SqlStructure;
 import org.fostash.atomic.jdbctojson.ResultSetIterator;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.fostash.atomic.jdbctojson.DBFactoryPool.getConnection;
 
@@ -42,22 +48,22 @@ public final class Storer {
      * @param performer operation to performer on result set
      * @return T as JSONObject from ResultSet or Exception
      */
-    public static <T> Try<T> processStatement(final ISql sql, final StatementPerformer<T> performer) {
-        return Try.of(() -> {
-                final Connection connection = getConnection();
-                final PreparedStatement statement = connection.prepareStatement(
-                        String.valueOf(sql),
-                        Statement.RETURN_GENERATED_KEYS
-                );
-            return performer.perform(statement);
-        });
+    public static <T> T processStatement(final ISql sql, final StatementPerformer<T> performer) throws SQLException {
+        final Connection connection = getConnection();
+        final SqlStructure sqlStructure = sql.build();
+        final PreparedStatement statement = connection.prepareStatement(
+                sqlStructure.getSql(),
+                Statement.RETURN_GENERATED_KEYS
+        );
+        // Setting named params
+        return performer.perform(statement);
     }
 
     /**
      * @param sql sql to process
      * @return entity id if present, optional.empty if no id present or an exception
      */
-    public static Try<Long> create(final IInsert sql) {
+    public static Long create(final IInsert sql) throws SQLException {
         return processStatement(sql, statement -> {
 
             logger.info("executing sql statement: " + sql);
@@ -80,12 +86,12 @@ public final class Storer {
      * @param sql update sql expression
      * @return updated rows number
      */
-    public static Try update(final ISql sql) {
+    public static Integer update(final ISql sql) throws SQLException {
 
         return processStatement(sql, statement -> {
 
             logger.info("executing sql statement: " + sql);
-            return Try.success(statement.executeUpdate());
+            return statement.executeUpdate(sql.toString());
         });
     }
 
@@ -93,25 +99,23 @@ public final class Storer {
      * @param sql delete sql expression
      * @return json object from supplier
      */
-    public static Try delete(final ISql sql) {
+    public static Integer delete(final ISql sql) throws SQLException {
         return processStatement(sql, statement -> {
 
             logger.info("executing sql statement: " + sql);
-            return Try.success(statement.executeUpdate());
+            return statement.executeUpdate(sql.toString());
         });
     }
 
-    public static Try<Clob> writeClob(final String clob, IFrom.ITable table, ISelect.IColumn column, IWhere where) {
-        return Try.of(() -> {
-            final Connection connection = getConnection();
-            final Clob myClob = connection.createClob();
-            myClob.setString(1, clob);
-            final String sql = "UPDATE " + table + " SET " + column + "= ? WHERE " + where;
-            final PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setClob(1, myClob);
-            pstmt.executeUpdate();
-            return myClob;
-        });
+    public static Clob writeClob(final String clob, IFrom.ITable table, ISelect.IColumn column, ICondition where) throws SQLException {
+        final Connection connection = getConnection();
+        final Clob myClob = connection.createClob();
+        myClob.setString(1, clob);
+        final String sql = "UPDATE " + table + " SET " + column + "= ? WHERE " + where;
+        final PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setClob(1, myClob);
+        pstmt.executeUpdate();
+        return myClob;
     }
 
     /**
@@ -138,7 +142,7 @@ public final class Storer {
      * @param sql sql expression
      * @return Stream of json object
      */
-    public static Try<JSONObject> singleResult(final ISql sql) {
+    public static JSONObject singleResult(final ISql sql) throws SQLException {
 
         logger.info("executing sql statement: " + sql);
         return singleResult(sql, Function.identity());
@@ -148,16 +152,16 @@ public final class Storer {
      * @param sql sql expression
      * @return Stream of json object
      */
-    public static <T> Try<T> singleResult(final ISql sql, final Function<JSONObject, T> c) {
+    public static <T> T singleResult(final ISql sql, final Function<JSONObject, T> c) throws SQLException {
 
         logger.info("executing sql statement: " + sql);
         final List<T> res = ResultSetIterator.getResult(sql, c);
         if (res.isEmpty()) {
-            return Try.failure(new SQLException("no result found"));
+            throw new SQLException("no result found");
         } else if (res.size() > 1) {
-            return  Try.failure(new SQLException("multiple result found"));
+            throw new SQLException("multiple result found");
         }
-        return Try.success(res.get(0));
+        return res.get(0);
     }
 
     private final List<ISql> batches = new LinkedList<>();
@@ -171,29 +175,22 @@ public final class Storer {
         return this;
     }
 
-    public Try collect() {
-        return Try.of(() -> {
-                final Connection connection = getConnection();
-                connection.setAutoCommit(false);
-                List<Long> collect = new LinkedList<>();
-                for (final ISql sql: batches) {
-                    final PreparedStatement statement = connection.prepareStatement(
-                            String.valueOf(sql),
-                            Statement.RETURN_GENERATED_KEYS
-                    );
-
-                    try (final ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                        if (generatedKeys.next()) {
-                            collect.add(generatedKeys.getLong(1));
-                        } else {
-                            collect.add(NO_KEY_GENERATED);
-                        }
-                    }
-                }
-                connection.setAutoCommit(false);
-                return collect;
-            });
+    public Optional<?> collect() throws SQLException {
+        final Connection connection = getConnection();
+        connection.setAutoCommit(false);
+        List<Long> collect = new LinkedList<>();
+        for (final ISql sql: batches) {
+            if (sql instanceof IInsert) {
+                collect.add(Storer.create((IInsert) sql));
+            } else {
+                final PreparedStatement statement = connection.prepareStatement(
+                        String.valueOf(sql),
+                        Statement.RETURN_GENERATED_KEYS
+                );
+                collect.add((long) statement.executeUpdate(sql.toString()));
+            }
+        }
+        connection.setAutoCommit(false);
+        return Optional.of(collect);
     }
-
-
 }

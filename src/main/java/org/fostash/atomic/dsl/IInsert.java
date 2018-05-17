@@ -13,7 +13,7 @@ public interface IInsert extends ISql {
      * @param columns array of column
      * @return IInsert interface
      */
-    IInsert into(final IFrom.ITable table, final ISelect.IColumn...columns);
+    IInsert into(final IFrom.ITable table, final ISelect.IColumn... columns);
 
     /**
      * @param objects values

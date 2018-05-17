@@ -1,5 +1,8 @@
 package org.fostash.atomic.dsl;
 
+import org.fostash.atomic.metamodel.ColumnMeta;
+import org.fostash.atomic.metamodel.TableMeta;
+
 /**
  *
  * Created by Fausto on 09/03/16.
@@ -9,21 +12,20 @@ public interface IFrom extends ISql {
     /**
      *
      * @param table single table
-     * @return IWhere interface
+     * @return ITable interface
      */
-    IWhere from(ITable table);
-
-    IWhere where();
-
+    ITable from(TableMeta table);
 
     /**
      * ITable interface.
      */
     interface ITable {
 
-        IJoin innerJoin(String name, String alias);
-        IJoin leftJoin(String name, String alias);
-        IJoin rightJoin(String name, String alias);
+        ICondition where();
+
+        IJoin innerJoin(TableMeta table);
+        IJoin leftJoin(TableMeta table);
+        IJoin rightJoin(TableMeta table);
     }
 
     interface IJoin {
@@ -34,9 +36,8 @@ public interface IFrom extends ISql {
          * @return ICondition interface
          */
 
-        ITable on(String left, String right);
+        ITable on(ColumnMeta left, ColumnMeta right);
+        ITable on(ColumnMeta[] left, ColumnMeta[] right);
     }
-
-    interface IJoinCondition {}
 
 }
