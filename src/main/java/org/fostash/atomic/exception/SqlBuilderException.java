@@ -1,4 +1,4 @@
-package org.fostash.atomic.dsl.exception;
+package org.fostash.atomic.exception;
 
 /**
  *

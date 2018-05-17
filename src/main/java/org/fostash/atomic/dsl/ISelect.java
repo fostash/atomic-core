@@ -1,6 +1,6 @@
 package org.fostash.atomic.dsl;
 
-import org.fostash.atomic.dsl.exception.SqlBuilderException;
+import org.fostash.atomic.exception.SqlBuilderException;
 import org.fostash.atomic.metamodel.ColumnMeta;
 
 import java.util.List;
