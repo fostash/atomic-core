@@ -6,9 +6,9 @@ package org.fostash.atomic.dsl;
  */
 public interface IOrder extends ISql {
 
-    /**
-     * @param c columns
-     * @return IOrder interface
-     */
-    ISql orderBy(ISelect.IColumn... c);
+//    /**
+//     * @param c columns
+//     * @return IOrder interface
+//     */
+//    ISql orderBy(IQuery.IColumn... c);
 }

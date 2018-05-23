@@ -1,9 +1,6 @@
 package org.fostash.atomic.storer;
 
-import org.fostash.atomic.dsl.ICondition;
-import org.fostash.atomic.dsl.IFrom;
 import org.fostash.atomic.dsl.IInsert;
-import org.fostash.atomic.dsl.ISelect;
 import org.fostash.atomic.dsl.ISql;
 import org.fostash.atomic.dsl.SqlStructure;
 import org.fostash.atomic.jdbctojson.ResultSetIterator;
@@ -11,7 +8,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -107,16 +103,16 @@ public final class Storer {
         });
     }
 
-    public static Clob writeClob(final String clob, IFrom.ITable table, ISelect.IColumn column, ICondition where) throws SQLException {
-        final Connection connection = getConnection();
-        final Clob myClob = connection.createClob();
-        myClob.setString(1, clob);
-        final String sql = "UPDATE " + table + " SET " + column + "= ? WHERE " + where;
-        final PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setClob(1, myClob);
-        pstmt.executeUpdate();
-        return myClob;
-    }
+//    public static Clob writeClob(final String clob, IFrom.ITable table, IQuery.IColumn column, ICondition where) throws SQLException {
+//        final Connection connection = getConnection();
+//        final Clob myClob = connection.createClob();
+//        myClob.setString(1, clob);
+//        final String sql = "UPDATE " + table + " SET " + column + "= ? WHERE " + where;
+//        final PreparedStatement pstmt = connection.prepareStatement(sql);
+//        pstmt.setClob(1, myClob);
+//        pstmt.executeUpdate();
+//        return myClob;
+//    }
 
     /**
      * @param sql sql expression

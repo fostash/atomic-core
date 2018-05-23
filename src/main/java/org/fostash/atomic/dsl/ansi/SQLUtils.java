@@ -1,6 +1,7 @@
 package org.fostash.atomic.dsl.ansi;
 
 import java.math.BigDecimal;
+import java.nio.file.FileAlreadyExistsException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -132,4 +133,90 @@ public class SQLUtils {
         }
     }
 
+    public static String getInitials(final String objectName) {
+        if (isSnakeCase(objectName)) {
+            // Return the initial letter of each segment of string separated by an underscore
+            final String clean = stripLeadingAndTrailingUnderscores(objectName);
+            final StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < clean.length(); i++) {
+                final char ch = clean.charAt(i);
+                if (Character.isLetter(ch) && Character.isUpperCase(ch)) {
+                    sb.append(ch);
+                }
+            }
+
+            return sb.toString().toLowerCase();
+
+        } else if (isCamelCase(objectName)) {
+            // Return all upper case letters
+            final String clean = stripLeadingAndTrailingUnderscores(objectName);
+            final StringBuilder sb = new StringBuilder();
+            for (final String s : clean.split("_")) {
+                sb.append(s.charAt(0));
+            }
+
+            return sb.toString();
+
+        } else {
+            // Give up and return the object name itself
+            return objectName;
+        }
+    }
+
+    /**
+     * Returns {@code true} if objectName contains at least an underscore in the middle.
+     * @param objectName The name to analyze
+     * @return {@code true} if objectName contains at least an underscore in the middle.
+     */
+    private static boolean isSnakeCase(final String objectName) {
+        final String clean = stripLeadingAndTrailingUnderscores(objectName);
+        return clean.indexOf('_') > 0;
+    }
+
+    /**
+     * Returns {@code true} if objectName contains no underscores and contains any combination of upper and lower case letters.
+     * @param objectName The name to analyze
+     * @return {@code true} if objectName contains no underscores and contains any combination of upper and lower case letters.
+     */
+    private static boolean isCamelCase(final String objectName) {
+        final String clean = stripLeadingAndTrailingUnderscores(objectName);
+        if (clean.indexOf('_') > 0) {
+            return false;
+        }
+
+        boolean hasLowerCaseLetter = false;
+        boolean hasUpperCaseLetter = false;
+        for (int i = 0; i < clean.length(); i++) {
+            final char ch = clean.charAt(i);
+            if (Character.isLetter(ch)) {
+                if (Character.isLowerCase(ch)) {
+                    hasLowerCaseLetter = true;
+                } else {
+                    hasUpperCaseLetter = true;
+                }
+            }
+        }
+
+        return hasLowerCaseLetter && hasUpperCaseLetter;
+    }
+
+    private static String stripLeadingAndTrailingUnderscores(final String s) {
+        int firstNonUndescoreChar;
+        for (firstNonUndescoreChar = 0; firstNonUndescoreChar < s.length() && s.charAt(firstNonUndescoreChar) == '_'; firstNonUndescoreChar++);
+
+        if (firstNonUndescoreChar == s.length()) {
+            // Uhm... all underscores?
+            return "";
+        }
+
+        int lastNonUnderscoreChar;
+        for (lastNonUnderscoreChar = s.length() - 1; lastNonUnderscoreChar >= 0 && s.charAt(lastNonUnderscoreChar) == '_'; lastNonUnderscoreChar--);
+
+        if (lastNonUnderscoreChar < 0) {
+            // Pretty impossible... it would mean "all underscores" and this would be caught earlier. However...
+            return "";
+        }
+
+        return s.substring(firstNonUndescoreChar, lastNonUnderscoreChar + 1); // End index is exclusive. Hence, + 1.
+    }
 }

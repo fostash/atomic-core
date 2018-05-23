@@ -76,17 +76,17 @@ public interface ICondition extends ISql {
 
     /**
      * exists condition.
-     * @param select ISelect interface
+     * @param select IQuery interface
      * @return IJoint interface condition.
      */
-    IJoint exists(ISelect select);
+    IJoint exists(IQuery select);
 
     /**
      * not exists condition.
-     * @param select ISelect interface
+     * @param select IQuery interface
      * @return IJoint interface condition.
      */
-    IJoint notExists(ISelect select);
+    IJoint notExists(IQuery select);
 
     /**
      * is null condition.

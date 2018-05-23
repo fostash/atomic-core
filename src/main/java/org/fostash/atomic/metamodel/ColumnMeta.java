@@ -1,20 +1,22 @@
 package org.fostash.atomic.metamodel;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.Optional;
+import org.fostash.atomic.dsl.IExpression;
 
-public interface ColumnMeta<T> {
+import java.lang.reflect.ParameterizedType;
+import java.util.Map;
+
+public interface ColumnMeta<T> extends IExpression<T> {
 
     String getName();
 
-    default String getAlias(){
-        return null;
+    @Override
+    default String getRepresentation() {
+        return this.getName();
     }
 
-    default String build() {
-        return Optional.ofNullable(getAlias())
-                .map(alias -> getName() + " " + alias)
-                .orElse(getName());
+    @Override
+    default void extractBindVariables(final Map<String, ? super Object> vars) {
+        // No bind variables allowed in this context
     }
 
     @SuppressWarnings("unchecked")

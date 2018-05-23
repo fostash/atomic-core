@@ -10,6 +10,7 @@
     <packaging>jar</packaging>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -49,16 +50,18 @@
             <scope>provided</scope>
         </dependency>
 
+<!--
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
             <version>5.2.16.Final</version>
         </dependency>
-
+-->
     </dependencies>
 
     <build>
         <plugins>
+<!--
             <plugin>
                 <groupId>org.bsc.maven</groupId>
                 <artifactId>maven-processor-plugin</artifactId>
@@ -85,6 +88,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+-->
         </plugins>
     </build>
 </project>
