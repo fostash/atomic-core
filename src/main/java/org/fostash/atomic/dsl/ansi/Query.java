@@ -1,15 +1,14 @@
 package org.fostash.atomic.dsl.ansi;
 
+import org.fostash.atomic.dsl.ICondition;
 import org.fostash.atomic.dsl.IExpression;
 import org.fostash.atomic.dsl.IJoint;
 import org.fostash.atomic.dsl.IQuery;
 import org.fostash.atomic.dsl.IQueryDefinition;
-import org.fostash.atomic.dsl.SqlStructure;
 import org.fostash.atomic.metamodel.TableMeta;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +20,7 @@ public class Query implements IQuery, IQueryDefinition {
     /** columns field. */
     private IExpression<?>[] selectList;
     private final Map<String, TableMeta> fromList;
+    private ICondition[] conditions;
     private IJoint conditionChain;
 //    private final List<ColumnMeta> columns = new LinkedList<>();
 //    private final List<Aggregator> aggregators = new LinkedList<>();
@@ -81,6 +81,12 @@ public class Query implements IQuery, IQueryDefinition {
         return this;
     }
 
+    @Override
+    public IQuery where(final ICondition... conditions) {
+        this.conditions = conditions;
+        return this;
+    }
+
     //    @Override
 //    public final IFrom select(final ColumnMeta... c) {
 //        if (c.length > 0) {
@@ -103,11 +109,23 @@ public class Query implements IQuery, IQueryDefinition {
 //        }
 //        return Factory.from(this);
 //    }
+//
+//    @Override
+//    public SqlStructure build() {
+//
+//        return null;
+//    }
+
 
     @Override
-    public SqlStructure build() {
-        // TODO: implement
+    public String getRepresentation() {
+        // TODO implement
         return null;
+    }
+
+    @Override
+    public void extractBindVariables(Map<String, ? super Object> vars) {
+        // TODO implement
     }
 
     @Override

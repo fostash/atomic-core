@@ -1,4 +1,4 @@
-package org.fostash.atomic.dsl.ansi;
+package org.fostash.atomic.dsl.ansi.expressions;
 
 import org.fostash.atomic.dsl.IExpression;
 
@@ -9,7 +9,7 @@ public class BindVariable<T> implements IExpression<T> {
     private final String name;
     private final T value;
 
-    BindVariable(final String name, final T value) {
+    public BindVariable(final String name, final T value) {
         this.name = name;
         this.value = value;
     }

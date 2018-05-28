@@ -1,4 +1,4 @@
-package org.fostash.atomic.dsl.ansi.functions;
+package org.fostash.atomic.dsl.ansi.expressions.functions;
 
 import org.fostash.atomic.dsl.IExpression;
 

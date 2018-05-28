@@ -6,7 +6,7 @@ import org.fostash.atomic.metamodel.TableMeta;
  *
  * Created by Fausto on 09/03/16.
  */
-public interface IQuery extends ISql {
+public interface IQuery extends IExpression<Object> {
 
     /**
      *
@@ -17,6 +17,7 @@ public interface IQuery extends ISql {
 
     IQuery from(final TableMeta table);
     IQuery from(final TableMeta table, final String alias);
+    IQuery where(final ICondition ... conditions);
     IQuery where(final IJoint conditionChain);
 
 //    /**

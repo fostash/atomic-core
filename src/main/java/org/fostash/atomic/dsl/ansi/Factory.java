@@ -1,11 +1,17 @@
 package org.fostash.atomic.dsl.ansi;
 
+import org.fostash.atomic.dsl.ICondition;
 import org.fostash.atomic.dsl.IExpression;
 import org.fostash.atomic.dsl.IQuery;
 import org.fostash.atomic.dsl.IQueryFactory;
-import org.fostash.atomic.dsl.ansi.functions.LowerCase;
-import org.fostash.atomic.dsl.ansi.functions.SqlFunction;
-import org.fostash.atomic.dsl.ansi.functions.UpperCase;
+import org.fostash.atomic.dsl.ansi.conditions.BinaryCondition;
+import org.fostash.atomic.dsl.ansi.conditions.InExpressions;
+import org.fostash.atomic.dsl.ansi.conditions.InSubquery;
+import org.fostash.atomic.dsl.ansi.conditions.IsNull;
+import org.fostash.atomic.dsl.ansi.expressions.BindVariable;
+import org.fostash.atomic.dsl.ansi.expressions.functions.LowerCase;
+import org.fostash.atomic.dsl.ansi.expressions.functions.SqlFunction;
+import org.fostash.atomic.dsl.ansi.expressions.functions.UpperCase;
 
 /**
  *
@@ -170,5 +176,65 @@ public class Factory implements IQueryFactory {
     @Override
     public UpperCase<String> toUpperCase(final IExpression<String> arg) {
         return new UpperCase<>(arg);
+    }
+
+    @Override
+    public <T> ICondition isNull(final IExpression<T> op) {
+        return new IsNull<>(op);
+    }
+
+    @Override
+    public <T> ICondition isNotNull(final IExpression<T> op) {
+        return new IsNull<>(op, true);
+    }
+
+    @Override
+    public <T> ICondition eq(final IExpression<T> op1, final IExpression<T> op2) {
+        return new BinaryCondition(op1, op2, "=");
+    }
+
+    @Override
+    public <T> ICondition neq(final IExpression<T> op1, final IExpression<T> op2) {
+        return new BinaryCondition(op1, op2, "!=");
+    }
+
+    @Override
+    public <T> ICondition gt(final IExpression<T> op1, final IExpression<T> op2) {
+        return new BinaryCondition(op1, op2, ">");
+    }
+
+    @Override
+    public <T> ICondition lt(final IExpression<T> op1, final IExpression<T> op2) {
+        return new BinaryCondition(op1, op2, "<");
+    }
+
+    @Override
+    public <T> ICondition gte(final IExpression<T> op1, final IExpression<T> op2) {
+        return new BinaryCondition(op1, op2, ">=");
+    }
+
+    @Override
+    public <T> ICondition lte(final IExpression<T> op1, final IExpression<T> op2) {
+        return new BinaryCondition(op1, op2, "<=");
+    }
+
+    @Override
+    public <T> ICondition in(final IExpression<T> expression, final IExpression<T>... expressions) {
+        return new InExpressions<>(expression, false, expressions);
+    }
+
+    @Override
+    public <T> ICondition notIn(final IExpression<T> expression, final IExpression<T>... expressions) {
+        return new InExpressions<>(expression, true, expressions);
+    }
+
+    @Override
+    public <T> ICondition in(final IExpression<T> expression, final IQuery subquery) {
+        return new InSubquery(expression, subquery, false);
+    }
+
+    @Override
+    public <T> ICondition notIn(final IExpression<T> expression, final IQuery subquery) {
+        return new InSubquery(expression, subquery, true);
     }
 }
