@@ -11,7 +11,7 @@ public class IsNull<T> extends UnaryCondition<T> {
         this.inversion = false;
     }
 
-    public IsNull(final IExpression<T> expression, String alias) {
+    public IsNull(final IExpression<T> expression, final String alias) {
         super(expression, alias);
         this.inversion = false;
     }
@@ -21,7 +21,7 @@ public class IsNull<T> extends UnaryCondition<T> {
         this.inversion = inversion;
     }
 
-    public IsNull(final IExpression<T> expression, final boolean inversion, String alias) {
+    public IsNull(final IExpression<T> expression, final boolean inversion, final String alias) {
         super(expression, alias);
         this.inversion = inversion;
     }

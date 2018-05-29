@@ -1,7 +1,6 @@
 package org.fostash.atomic.dsl.ansi.conditions;
 
 import org.fostash.atomic.dsl.IExpression;
-import org.fostash.atomic.dsl.ansi.conditions.Condition;
 
 import java.util.Map;
 

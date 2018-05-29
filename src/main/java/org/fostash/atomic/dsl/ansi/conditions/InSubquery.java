@@ -6,11 +6,11 @@ import org.fostash.atomic.dsl.IQuery;
 import java.util.Map;
 
 public class InSubquery extends Condition {
-    private final IExpression<?> expression;
+    private final IExpression expression;
     private final IQuery subquery;
     private final boolean inversion;
 
-    public InSubquery(final IExpression<?> expression, final IQuery subquery, final boolean inversion) {
+    public InSubquery(final IExpression expression, final IQuery subquery, final boolean inversion) {
         this(expression, subquery, inversion, null);
     }
 

@@ -1,8 +1,11 @@
 package org.fostash.atomic.dsl.ansi.conditions;
 
 import org.fostash.atomic.dsl.IExpression;
+import org.fostash.atomic.dsl.IRepresentable;
 
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InExpressions<T> extends Condition {
 
@@ -15,6 +18,7 @@ public class InExpressions<T> extends Condition {
     }
 
     public InExpressions(final String alias, final IExpression<T> expression, final boolean inversion, final IExpression<T> ... expressions) {
+        super(alias);
         if (expression == null) {
             throw new IllegalArgumentException("expression is null.");
         }
@@ -43,15 +47,20 @@ public class InExpressions<T> extends Condition {
 
     @Override
     public String getRepresentation() {
-        final StringBuilder sbExpressions = new StringBuilder();
+        /*final StringBuilder sbExpressions = new StringBuilder();
         for (final IExpression<T> expression : this.expressions) {
             if (sbExpressions.length() > 0) {
                 sbExpressions.append(", ");
             }
 
             sbExpressions.append(expression.getRepresentation());
-        }
+        }*/
 
-        return String.format("(%s %s in (%s))", this.expression.getRepresentation(), this.inversion ? "not" : "", sbExpressions.toString());
+        final String expRepresentation = Stream.of(this.expressions)
+                .map(IRepresentable::getRepresentation)
+                .collect(Collectors.joining(", "));
+
+        return String.format("(%s %s in (%s)) %s", this.expression.getRepresentation(), this.inversion ? "not " : "", expRepresentation,
+                this.getAlias() != null ? "as " + getAlias() : "");
     }
 }

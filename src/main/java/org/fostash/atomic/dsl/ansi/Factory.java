@@ -12,6 +12,7 @@ import org.fostash.atomic.dsl.ansi.expressions.BindVariable;
 import org.fostash.atomic.dsl.ansi.expressions.functions.LowerCase;
 import org.fostash.atomic.dsl.ansi.expressions.functions.SqlFunction;
 import org.fostash.atomic.dsl.ansi.expressions.functions.UpperCase;
+import org.fostash.atomic.metamodel.ColumnMeta;
 
 /**
  *
@@ -164,18 +165,18 @@ public class Factory implements IQueryFactory {
     }
 
     @Override
-    public SqlFunction<?> function(final String functionName, final IExpression<?> ... arguments) {
-        return new SqlFunction<>(functionName, arguments);
+    public SqlFunction function(final String functionName, final IExpression<?> ... arguments) {
+        return new SqlFunction(functionName, arguments);
     }
 
     @Override
-    public LowerCase<String> toLowerCase(final IExpression<String> arg) {
-        return new LowerCase<>(arg);
+    public LowerCase toLowerCase(final ColumnMeta<String> arg) {
+        return new LowerCase(arg);
     }
 
     @Override
-    public UpperCase<String> toUpperCase(final IExpression<String> arg) {
-        return new UpperCase<>(arg);
+    public UpperCase toUpperCase(final ColumnMeta<String> arg) {
+        return new UpperCase(arg);
     }
 
     @Override

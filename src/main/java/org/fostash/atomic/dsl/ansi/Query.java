@@ -5,6 +5,7 @@ import org.fostash.atomic.dsl.IExpression;
 import org.fostash.atomic.dsl.IJoint;
 import org.fostash.atomic.dsl.IQuery;
 import org.fostash.atomic.dsl.IQueryDefinition;
+import org.fostash.atomic.exception.SqlBuilderException;
 import org.fostash.atomic.metamodel.TableMeta;
 
 import java.util.Arrays;
@@ -46,6 +47,11 @@ public class Query implements IQuery, IQueryDefinition {
     public Map<String, ?> getBindVariables() {
         // TODO
         return null;
+    }
+
+    @Override
+    public String getAlias() {
+        throw new SqlBuilderException("Invalid call to method getAlias on Query, should use getTableAlias()");
     }
 
     @Override

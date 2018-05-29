@@ -4,6 +4,9 @@ import org.fostash.atomic.metamodel.ColumnMeta;
 
 /**
  * InExpressions PostgreSQL you can select a condition. So it must be an expression
+ *
+ * Vale la pena tenere questa interfaccia ?!?
+ *
  * Created by Fausto on 09/03/16.
  */
 public interface ICondition extends IExpression<Boolean> {

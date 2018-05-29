@@ -1,21 +1,29 @@
 package org.fostash.atomic.dsl.ansi.expressions.functions;
 
 import org.fostash.atomic.dsl.IExpression;
+import org.fostash.atomic.dsl.IRepresentable;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class SqlFunction<T> implements IExpression<T> {
+public class SqlFunction implements IExpression<Object> {
 
-    private final String alias;
-    private final String function;
-    private final IExpression<?>[] arguments;
+    protected /*final */String alias;
+    protected final String function;
+    protected final IExpression<?>[] arguments;
 
-    public SqlFunction(final String function, final IExpression<?>... arguments) {
-        this(null, function, arguments);
+    public <E extends IExpression> SqlFunction(final String function, final E... arguments) {
+        //this(function, arguments);
+        if (function == null || function.isEmpty()) {
+            throw new IllegalArgumentException("'function' cannot be empty.");
+        }
+        this.function = function;
+        this.arguments = Arrays.copyOf(arguments, arguments.length);
     }
 
-    public SqlFunction(final String alias, final String function, final IExpression<?>... arguments) {
+    /*public <E extends IExpression> SqlFunction(final String alias, final String function, final E... arguments) {
         if (function == null || function.isEmpty()) {
             throw new IllegalArgumentException("'function' cannot be empty.");
         }
@@ -23,7 +31,7 @@ public class SqlFunction<T> implements IExpression<T> {
         this.alias = alias;
         this.function = function;
         this.arguments = Arrays.copyOf(arguments, arguments.length);
-    }
+    }*/
 
     @Override
     public void extractBindVariables(final Map<String, ? super Object> vars) {
@@ -34,16 +42,17 @@ public class SqlFunction<T> implements IExpression<T> {
 
     @Override
     public String getRepresentation() {
-        final StringBuilder args = new StringBuilder();
-        for (final IExpression<?> arg : this.arguments) {
-            if (args.length() > 0) {
-                args.append(", ");
-            }
+        final String args = Stream.of(this.arguments)
+                .map(IRepresentable::getRepresentation)
+                .collect(Collectors.joining(", "));
 
-            args.append(arg.getRepresentation());
-        }
+        return String.format("%s(%s) %s", this.function, args, this.alias != null && !this.alias.isEmpty() ? alias : "");
+    }
 
-        return String.format("%s(%s)", this.function, args.toString());
+    @Override
+    public IExpression<Object> as(String alias) {
+        this.alias = alias;
+        return this;
     }
 
     @Override

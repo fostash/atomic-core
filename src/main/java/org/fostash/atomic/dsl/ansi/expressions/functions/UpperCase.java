@@ -1,13 +1,10 @@
 package org.fostash.atomic.dsl.ansi.expressions.functions;
 
-import org.fostash.atomic.dsl.IExpression;
+import org.fostash.atomic.metamodel.ColumnMeta;
 
-public class UpperCase<T> extends SqlFunction<T> {
-    public UpperCase(final IExpression<?> argument) {
-        super("upper", argument);
-    }
+public class UpperCase extends SqlFunction {
 
-    public UpperCase(final String alias, final IExpression<?> argument) {
-        super(alias, "upper", argument);
+    public <T extends ColumnMeta> UpperCase(final T argument) {
+        super("lower", argument);
     }
 }

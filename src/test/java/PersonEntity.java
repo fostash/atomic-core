@@ -9,17 +9,14 @@ public final class PersonEntity {
     public static final ColumnMeta<String> surname = (ColumnMeta<String>) () -> "LAST_NAME";
 //    public static final ColumnMeta<Date> birthday = (ColumnMeta<Date>) () -> "BIRTHDAY";
 
-    public static ColumnMeta<Long> id(final String alias) {
+    /*public static ColumnMeta<Long> id() {
         return new ColumnMeta<Long>() {
             @Override
             public String getName() {
                 return "ID";
             }
 
-            @Override
-            public String getAlias() {
-                return alias;
-            }
+
         };
     }
 
@@ -49,5 +46,5 @@ public final class PersonEntity {
                 return alias;
             }
         };
-    }
+    }*/
 }
