@@ -1,36 +1,60 @@
 package org.fostash.atomic.metamodel;
 
-import org.fostash.atomic.dsl.IExpression;
-import org.fostash.atomic.dsl.ansi.expressions.functions.LowerCase;
-import org.fostash.atomic.dsl.ansi.expressions.functions.UpperCase;
+import org.fostash.atomic.dsl.ISqlFunction;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
+import java.util.Optional;
 
-public interface ColumnMeta<T> extends IExpression<T> {
+public class ColumnMeta<T> implements ISqlFunction {
 
-    String getName();
+    private final String name;
+    private final String tableAlias;
 
-    @Override
-    default String getRepresentation() {
-        return this.getName();
+    protected String alias;
+
+    private ColumnMeta(final String name) {
+        this.name = name;
+        this.tableAlias = null;
+    }
+
+    private ColumnMeta(final String name, final String tableAlias) {
+        this.name = name;
+        this.tableAlias = tableAlias + ".";
     }
 
     @Override
-    default void extractBindVariables(final Map<String, ? super Object> vars) {
-        // No bind variables allowed in this context
+    public String getRepresentation() {
+        return String.format(
+                "%s%s %s",
+                Optional.ofNullable(this.tableAlias).orElse(""),
+                this.name,
+                Optional.ofNullable(alias).orElse("")
+        ).trim();
     }
 
     @SuppressWarnings("unchecked")
-    default Class<T> getType() {
+    public Class<T> getType() {
         return (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    default LowerCase toLowerCase() {
-        return new LowerCase(this);
+    @Override
+    public ColumnMeta<T> as(String alias) {
+        this.alias = alias;
+        return this;
     }
-    default UpperCase toUpperCase() {
-        return new UpperCase(this);
+
+    @Override
+    public void extractBindVariables(final Map vars) {
+        // No bind variables allowed in this context
+    }
+
+    public static <T> ColumnMeta<T> of(final String name) {
+        return new ColumnMeta<>(name);
+    }
+
+    public static <T> ColumnMeta<T> of(final String name, final String tableAlias) {
+        return new ColumnMeta<>(name, tableAlias);
     }
 }

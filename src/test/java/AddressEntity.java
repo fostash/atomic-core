@@ -5,7 +5,7 @@ public final class AddressEntity {
 
     public static final TableMeta tableName = (TableMeta) () -> "ADDRESS";
 
-    public static final ColumnMeta<PersonEntity> personEntity = (ColumnMeta<PersonEntity>) () -> "PERSON_FK";
-    public static final ColumnMeta<String> street= (ColumnMeta<String>) () -> "STREET_NAME";
-    public static final ColumnMeta<Long> number = (ColumnMeta<Long>) () -> "NUMBER";
+    public static final ColumnMeta<PersonEntity> personEntity = ColumnMeta.of("PERSON_FK");
+    public static final ColumnMeta<String> street = ColumnMeta.of("STREET_NAME");
+    public static final ColumnMeta<Long> number = ColumnMeta.of("NUMBER");
 }

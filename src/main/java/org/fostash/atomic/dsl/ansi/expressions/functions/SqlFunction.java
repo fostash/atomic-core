@@ -2,15 +2,17 @@ package org.fostash.atomic.dsl.ansi.expressions.functions;
 
 import org.fostash.atomic.dsl.IExpression;
 import org.fostash.atomic.dsl.IRepresentable;
+import org.fostash.atomic.dsl.ISqlFunction;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SqlFunction implements IExpression<Object> {
+public class SqlFunction implements ISqlFunction {
 
     protected /*final */String alias;
+    //protected /*final */String tableAlias;
     protected final String function;
     protected final IExpression<?>[] arguments;
 
@@ -34,7 +36,7 @@ public class SqlFunction implements IExpression<Object> {
     }*/
 
     @Override
-    public void extractBindVariables(final Map<String, ? super Object> vars) {
+    public void extractBindVariables(final Map vars) {
         for (final IExpression<?> arg : this.arguments) {
             arg.extractBindVariables(vars);
         }
@@ -46,11 +48,13 @@ public class SqlFunction implements IExpression<Object> {
                 .map(IRepresentable::getRepresentation)
                 .collect(Collectors.joining(", "));
 
-        return String.format("%s(%s) %s", this.function, args, this.alias != null && !this.alias.isEmpty() ? alias : "");
+        return String.format("%s(%s) %s", this.function,
+                //this.getTableAlias() != null && !this.getTableAlias().isEmpty() ? this.getTableAlias() + "." : "",
+                args, this.alias != null && !this.alias.isEmpty() ? alias : "");
     }
 
     @Override
-    public IExpression<Object> as(String alias) {
+    public IExpression<?> as(String alias) {
         this.alias = alias;
         return this;
     }

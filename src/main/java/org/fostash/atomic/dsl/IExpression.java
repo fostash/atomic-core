@@ -9,13 +9,9 @@ public interface IExpression<T> extends IRepresentable {
 
     default IExpression as(final String alias) {
         throw new SqlBuilderException("feature you are using not override this method");
-    };
-
-    default String getAlias() {
-        return null;
     }
 
-    default String getTableAlias() {
+    default String getAlias() {
         return null;
     }
 }

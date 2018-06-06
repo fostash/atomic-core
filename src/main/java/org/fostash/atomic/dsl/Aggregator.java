@@ -6,5 +6,5 @@ import java.util.function.Function;
 
 public final class Aggregator {
 
-    public static Function<ColumnMeta, String> SUM = s -> "sum(" + s.getName() + ") " + s.getRepresentation();
+    public static Function<ColumnMeta, String> SUM = s -> "sum(" + s.getRepresentation() + ") "; // + s.getRepresentation();
 }
