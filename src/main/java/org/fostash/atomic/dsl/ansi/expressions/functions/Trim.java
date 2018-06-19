@@ -4,10 +4,10 @@ import org.fostash.atomic.dsl.IExpression;
 
 import java.util.Map;
 
-public class UpperCase extends SqlFunction {
+public class Trim extends SqlFunction {
 
-    public <T extends IExpression> UpperCase(final T argument) {
-        super("upper", argument);
+    public <T extends IExpression> Trim(final T argument) {
+        super("trim", argument);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class BinaryCondition extends Condition {
     }
 
     @Override
-    public void extractBindVariables(final Map<String, ? super Object> vars) {
+    public void extractBindVariables(final Map vars) {
         this.expression1.extractBindVariables(vars);
         this.expression2.extractBindVariables(vars);
     }

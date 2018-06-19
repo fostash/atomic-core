@@ -1,10 +1,27 @@
 package org.fostash.atomic.dsl.ansi;
 
+import org.fostash.atomic.dsl.ICondition;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  *
  * Created by Fausto on 09/03/16.
  */
 public class Where {
+
+    private List<ICondition> conditions;
+
+    public Where(final ICondition condition) {
+        this.conditions = Collections.singletonList(condition);
+    }
+
+    public void addCondition(ICondition condition) {
+        this.conditions.add(condition);
+    }
 
 //    /** from field. */
 //    private IFrom from;

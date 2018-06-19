@@ -4,6 +4,7 @@ import org.fostash.atomic.dsl.ICondition;
 import org.fostash.atomic.dsl.IExpression;
 import org.fostash.atomic.dsl.IQuery;
 import org.fostash.atomic.dsl.IQueryFactory;
+import org.fostash.atomic.dsl.ISqlFunction;
 import org.fostash.atomic.dsl.ansi.conditions.BinaryCondition;
 import org.fostash.atomic.dsl.ansi.conditions.InExpressions;
 import org.fostash.atomic.dsl.ansi.conditions.InSubquery;
@@ -112,19 +113,19 @@ public class Factory implements IQueryFactory {
 //    /**
 //     * utility method for joint operator.
 //     * @param condition ICondition interface
-//     * @return Joint instance
+//     * @return Join instance
 //     */
 //    public static IJoint joint(final ICondition condition) {
-//        return new Joint(condition);
+//        return new Join(condition);
 //    }
 //
 //    /**
 //     * utility method for joint operator.
 //     * @param joint IJoint interface
-//     * @return Joint instance
+//     * @return Join instance
 //     */
 //    public static IJoint joint(final IJoint joint) {
-//        return new Joint(joint);
+//        return new Join(joint);
 //    }
 //
 //    /**
@@ -165,17 +166,17 @@ public class Factory implements IQueryFactory {
     }
 
     @Override
-    public SqlFunction function(final String functionName, final IExpression<?> ... arguments) {
+    public ISqlFunction function(final String functionName, final IExpression<?> ... arguments) {
         return new SqlFunction(functionName, arguments);
     }
 
     @Override
-    public LowerCase toLowerCase(final ColumnMeta<String> arg) {
+    public ISqlFunction toLowerCase(final ColumnMeta<String> arg) {
         return new LowerCase(arg);
     }
 
     @Override
-    public UpperCase toUpperCase(final ColumnMeta<String> arg) {
+    public ISqlFunction toUpperCase(final ColumnMeta<String> arg) {
         return new UpperCase(arg);
     }
 

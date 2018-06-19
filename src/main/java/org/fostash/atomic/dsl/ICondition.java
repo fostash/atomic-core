@@ -9,14 +9,15 @@ import org.fostash.atomic.metamodel.ColumnMeta;
  *
  * Created by Fausto on 09/03/16.
  */
-public interface ICondition extends IExpression<Boolean> {
+public interface ICondition<L, R> extends IExpression<Boolean> {
+
 //    /**
 //     * equals condition.
 //     * @param f column name
 //     * @param v value
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint eq(ColumnMeta<T> f, T v);
+//    ICondition eq(final ColumnMeta<L> f, final R v);
 //
 //    /**
 //     * not equals condition.
@@ -24,7 +25,7 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @param v value
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint notEq(ColumnMeta<T> f, T v);
+//    ICondition notEq(final ColumnMeta<L> f, final R v);
 //
 //    /**
 //     * greater than condition.
@@ -32,7 +33,7 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @param v value
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint gt(ColumnMeta<T> f, T v);
+//    ICondition gt(final ColumnMeta<L> f, final R v);
 //
 //    /**
 //     * less than condition.
@@ -41,7 +42,7 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @return IJoint interface condition.
 //     */
 //
-//    <T> IJoint lt(ColumnMeta<T> f, T v);
+//    ICondition lt(final ColumnMeta<L> f, final R v);
 //
 //    /**
 //     * greater or equal than condition.
@@ -50,7 +51,7 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @return IJoint interface condition.
 //     */
 //
-//    <T> IJoint ge(ColumnMeta<T> f, T v);
+//    ICondition ge(final ColumnMeta<L> f, final R v);
 //
 //    /**
 //     * less or equal than condition.
@@ -58,7 +59,7 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @param v value
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint le(ColumnMeta<T> f, T v);
+//    ICondition le(final ColumnMeta<L> f, final R v);
 //
 //    /**
 //     * in condition.
@@ -66,7 +67,7 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @param v value
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint in(ColumnMeta<T> f, T[] v);
+//    ICondition in(final ColumnMeta<L> f, final R...v);
 //
 //    /**
 //     * not in condition.
@@ -74,35 +75,35 @@ public interface ICondition extends IExpression<Boolean> {
 //     * @param v value
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint notIn(ColumnMeta<T> f, T[] v);
+//    ICondition notIn(final ColumnMeta<L> f, final R[] v);
 //
 //    /**
 //     * exists condition.
 //     * @param select IQuery interface
 //     * @return IJoint interface condition.
 //     */
-//    IJoint exists(IQuery select);
+//    ICondition exists(final R select);
 //
 //    /**
 //     * not exists condition.
 //     * @param select IQuery interface
 //     * @return IJoint interface condition.
 //     */
-//    IJoint notExists(IQuery select);
+//    ICondition notExists(final R select);
 //
 //    /**
 //     * is null condition.
 //     * @param f column name
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint isNull(ColumnMeta<T> f);
+//    ICondition isNull(final ColumnMeta<L> f);
 //
 //    /**
 //     * is not null condition.
 //     * @param f column name
 //     * @return IJoint interface condition.
 //     */
-//    <T> IJoint isNotNull(ColumnMeta<T> f);
+//    ICondition isNotNull(final ColumnMeta<L> f);
 //
 //    /**
 //     * limit result to lim value

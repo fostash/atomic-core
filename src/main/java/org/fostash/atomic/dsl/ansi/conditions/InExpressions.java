@@ -37,7 +37,7 @@ public class InExpressions<T> extends Condition {
     }
 
     @Override
-    public void extractBindVariables(Map<String, ? super Object> vars) {
+    public void extractBindVariables(Map vars) {
         this.expression.extractBindVariables(vars);
 
         for (final IExpression<T> expression : this.expressions) {

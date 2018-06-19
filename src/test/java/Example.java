@@ -10,8 +10,12 @@ public class Example {
         ;
 
         System.out.println(
-                q.select(PersonEntity.id("tb").toLowerCase().as("persona_id"), PersonEntity.name.as("first_name"), PersonEntity.surname.as("last_name"))
-                        .from(PersonEntity.tableName, "p")
+                q.select(
+                        PersonEntity.id("p").as("persona_id"),
+                        qf.toLowerCase(PersonEntity.name).as("first_name"),
+                        qf.toLowerCase(PersonEntity.surname).as("last_name")
+                ).from(PersonEntity.tableName.as("p").innerJoin(AddressEntity.tableName)
+                        .on(PersonEntity.id, AddressEntity.personEntity)).getRepresentation()
         );
 
 //        select.select(PersonEntity.name)

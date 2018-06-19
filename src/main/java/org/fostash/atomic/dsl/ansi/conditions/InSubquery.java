@@ -31,7 +31,7 @@ public class InSubquery extends Condition {
     }
 
     @Override
-    public void extractBindVariables(Map<String, ? super Object> vars) {
+    public void extractBindVariables(Map vars) {
         this.subquery.extractBindVariables(vars);
     }
 

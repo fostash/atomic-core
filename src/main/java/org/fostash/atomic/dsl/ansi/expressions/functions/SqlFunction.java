@@ -50,7 +50,7 @@ public class SqlFunction implements ISqlFunction {
 
         return String.format("%s(%s) %s", this.function,
                 //this.getTableAlias() != null && !this.getTableAlias().isEmpty() ? this.getTableAlias() + "." : "",
-                args, this.alias != null && !this.alias.isEmpty() ? alias : "");
+                args, this.buildAlias());
     }
 
     @Override

@@ -14,4 +14,11 @@ public interface IExpression<T> extends IRepresentable {
     default String getAlias() {
         return null;
     }
+
+    default String buildAlias() {
+        if (getAlias() != null) {
+            return String.format("as %s", getAlias());
+        }
+        return "";
+    }
 }

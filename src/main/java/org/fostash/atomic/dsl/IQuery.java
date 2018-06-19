@@ -1,5 +1,6 @@
 package org.fostash.atomic.dsl;
 
+import org.fostash.atomic.dsl.ansi.Join;
 import org.fostash.atomic.metamodel.TableMeta;
 
 /**
@@ -16,7 +17,10 @@ public interface IQuery extends IExpression<Object> {
     IQuery select(final IExpression<?>... selectList);
 
     IQuery from(final TableMeta table);
-    IQuery from(final TableMeta table, final String alias);
-    IQuery where(final ICondition ... conditions);
-    IQuery where(final IJoint conditionChain);
+    IQuery from(final Join join);
+    //IQuery where(final ICondition condition);
+    /*IQuery and(final ICondition condition);
+    IQuery or(final ICondition condition);
+    IQuery groupBy(final ColumnMeta... columns);
+    IQuery orderBy(final IExpression<?>... columns);*/
 }

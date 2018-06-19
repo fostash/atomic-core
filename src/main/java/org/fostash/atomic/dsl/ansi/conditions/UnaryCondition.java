@@ -27,7 +27,7 @@ public abstract class UnaryCondition<T> extends Condition {
     }
 
     @Override
-    public void extractBindVariables(final Map<String, ? super Object> vars) {
+    public void extractBindVariables(final Map vars) {
         this.expression.extractBindVariables(vars);
     }
 }

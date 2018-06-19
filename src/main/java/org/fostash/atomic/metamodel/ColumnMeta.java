@@ -1,12 +1,12 @@
 package org.fostash.atomic.metamodel;
 
-import org.fostash.atomic.dsl.ISqlFunction;
+import org.fostash.atomic.dsl.IExpression;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 import java.util.Optional;
 
-public class ColumnMeta<T> implements ISqlFunction {
+public class ColumnMeta<T> implements IExpression<T> {
 
     private final String name;
     private final String tableAlias;
@@ -24,12 +24,17 @@ public class ColumnMeta<T> implements ISqlFunction {
     }
 
     @Override
+    public String getAlias() {
+        return alias;
+    }
+
+    @Override
     public String getRepresentation() {
         return String.format(
                 "%s%s %s",
                 Optional.ofNullable(this.tableAlias).orElse(""),
                 this.name,
-                Optional.ofNullable(alias).orElse("")
+                this.buildAlias()
         ).trim();
     }
 
@@ -40,7 +45,7 @@ public class ColumnMeta<T> implements ISqlFunction {
     }
 
     @Override
-    public ColumnMeta<T> as(String alias) {
+    public ColumnMeta<T> as(final String alias) {
         this.alias = alias;
         return this;
     }

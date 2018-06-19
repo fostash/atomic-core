@@ -1,36 +1,22 @@
 package org.fostash.atomic.dsl.ansi;
 
-/**
- *
- * Created by Fausto on 09/03/16.
- */
-public class From /*implements IFrom*/ {
+import org.fostash.atomic.dsl.IRepresentable;
+import org.fostash.atomic.metamodel.TableMeta;
 
-//    /** select field. */
-//    private IQuery select;
-//    /** sigle table field */
-//    private TableMeta table;
-//
-//    /**
-//     * @param aSelect IQuery interface
-//     */
-//    public From(final IQuery aSelect) {
-//        this.select = aSelect;
-//    }
-//
-//    /**
-//     * @param tableMeta table list
-//     * @return IWhere interface
-//     */
-//    @Override
-//    public ITable from(TableMeta tableMeta) {
-//        table = tableMeta;
-//        return null;
-//    }
-//
-//    @Override
-//    public final String toString() {
-//        return select
-//                + " FROM " + table;
-//    }
+public class From implements IRepresentable {
+
+    private final TableMeta table;
+
+    From(final TableMeta table) {
+        this.table = table;
+    }
+
+    public static From of(final TableMeta table) {
+        return new From(table);
+    }
+
+    @Override
+    public String getRepresentation() {
+        return String.format("%s%s", table.getName(), table.getAlias());
+    }
 }

@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,6 +52,24 @@ public final class Storer {
                 sqlStructure.getSql(),
                 Statement.RETURN_GENERATED_KEYS
         );
+        sqlStructure.getParams().forEach((key, value) -> {
+            try {
+                if (value instanceof List) {
+                    // TODO type of first element list
+                    statement.setArray(key, connection.createArrayOf("VARCHAR", ((List) value).toArray()));
+                } else if (value instanceof String) {
+                    statement.setString(key, (String) value);
+                } else if (value instanceof Integer) {
+                    statement.setInt(key, (Integer) value);
+                } else if (value instanceof Double) {
+                    statement.setDouble(key, (Double) value);
+                } else if (value instanceof BigDecimal) {
+                    statement.setBigDecimal(key, (BigDecimal) value);
+                } // ...
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
         // Setting named params
         return performer.perform(statement);
     }
