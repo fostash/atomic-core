@@ -1,5 +1,6 @@
 package org.fostash.atomic.dsl.interfaces;
 
 public interface IOrderable {
-    IToBeDefined orderBy(final IExpression ... expressions);
+    IOrderable asc(final IExpression expression);
+    IOrderable desc(final IExpression expression);
 }

@@ -1,4 +1,4 @@
 package org.fostash.atomic.dsl.interfaces;
 
-public interface IQuerable extends IJoinable {
+public interface IQuerable {
 }
