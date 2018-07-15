@@ -8,6 +8,8 @@ public class Example {
                 .innerJoin(null).on(null)
                 .crossJoin(null)
                 .where(null).and(null).and(null).or(null)
-                .asc(null).desc(null).desc(null);
+                .groupBy((IExpression[]) null)
+                .orderBy((IExpression[]) null);
+                //.asc(null).desc(null).desc(null);
     }
 }
