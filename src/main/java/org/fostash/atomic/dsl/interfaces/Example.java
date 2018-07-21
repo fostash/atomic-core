@@ -9,7 +9,15 @@ public class Example {
                 .crossJoin(null)
                 .where(null).and(null).and(null).or(null)
                 .groupBy((IExpression[]) null)
-                .orderBy((IExpression[]) null);
+                .orderBy((ISortable[]) null)
+        .union()
+        .select((IExpression[]) null)
+                .from(null)
+                .innerJoin(null).on(null)
+                .crossJoin(null)
+                .where(null).and(null).and(null).or(null)
+                .groupBy((IExpression[]) null)
+                .orderBy((ISortable[]) null);
                 //.asc(null).desc(null).desc(null);
     }
 }
