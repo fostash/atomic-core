@@ -13,6 +13,7 @@ public class Example {
                 .crossJoin(null)
                 .where(null).and(null).and(null).or(null)
                 .groupBy((IExpression[]) null)
+                .having(null).and(null).or(null)
                 .orderBy((IExpression) null)                // Solution #1
                 .orderBy((IExpression) null, DESCENDING)    // Solution #1
                 .orderBy((IExpression) null, ASCENDING)     // Solution #1
