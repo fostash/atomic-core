@@ -7,6 +7,7 @@ public interface IGroupByFilterChain extends IBasicFilterChain, IOrderable {
      * @param condition condition to be chained
      * @return {@link IGroupByFilterChain} (covariant)
      */
+    @Override
     IGroupByFilterChain and(final ICondition condition);
 
     /**
@@ -14,5 +15,6 @@ public interface IGroupByFilterChain extends IBasicFilterChain, IOrderable {
      * @param condition condition to be chained
      * @return {@link IGroupByFilterChain} (covariant)
      */
+    @Override
     IGroupByFilterChain or(final ICondition condition);
 }
