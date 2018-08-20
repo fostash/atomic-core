@@ -6,7 +6,7 @@ public interface IQuery extends IQuerable {
      * @param expressions vararg of {@link IExpression}s.
      * @return an {@link ISelectList} implementation.
      */
-    ISelectList select(final IExpression ... expressions);
+    ISelectList select(final IExpression<?> ... expressions);
 
     /**
      * This method selects all the mapped column of {@code table}.

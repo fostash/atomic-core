@@ -1,5 +1,5 @@
 package org.fostash.atomic.dsl.interfaces;
 
-public interface IExpression {
-    void as(final String alias);
+public interface IExpression<T> {
+    IExpression<T> as(final String alias);
 }
